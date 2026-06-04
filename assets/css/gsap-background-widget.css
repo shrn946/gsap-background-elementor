@@ -1,0 +1,486 @@
+.elementor-widget-gsap_background {
+  width: 100%;
+}
+
+.gsap-bg-widget,
+.gsap-bg-widget *,
+.gsap-bg-widget *::before,
+.gsap-bg-widget *::after {
+  box-sizing: border-box;
+}
+
+.gsap-bg-widget {
+  --pink: hsl(330, 100%, 55%);
+  --yellow: hsl(52, 100%, 50%);
+  --orange: hsl(20, 100%, 55%);
+  --cyan: hsl(185, 100%, 52%);
+  --cream: hsl(48, 100%, 93%);
+  --dark: hsl(20, 10%, 5%);
+  --gradient-overlay-opacity: 0.55;
+  --gradient-overlay-blend: soft-light;
+  --effect-opacity: 0.55;
+  --effect-speed: 32;
+  --effect-intensity: 70;
+  --effect-color: #ffffff;
+  --rain-angle: 12deg;
+  --snow-size: 7px;
+  --title-layer-x: 0;
+  --title-layer-y: 0;
+  position: relative;
+  width: 100%;
+  background: var(--dark);
+  overflow-x: hidden;
+  cursor: none;
+}
+
+.gsap-bg-cursor {
+  position: fixed;
+  z-index: 9999;
+  pointer-events: none;
+  width: 10px;
+  height: 10px;
+  background: var(--yellow);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: difference;
+  opacity: 0;
+}
+
+.gsap-bg-cursor-ring {
+  position: fixed;
+  z-index: 9998;
+  pointer-events: none;
+  width: 36px;
+  height: 36px;
+  border: 2px solid var(--yellow);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: difference;
+  transition: width 0.25s, height 0.25s, opacity 0.2s;
+  opacity: 0;
+}
+
+.gsap-bg-widget.is-cursor-active .gsap-bg-cursor,
+.gsap-bg-widget.is-cursor-active .gsap-bg-cursor-ring {
+  opacity: 1;
+}
+
+.gsap-bg-wrapper {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.gsap-bg-plasma {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(ellipse 70% 70% at 20% 30%, var(--pink) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 60% at 80% 15%, var(--yellow) 0%, transparent 55%),
+    radial-gradient(ellipse 65% 65% at 55% 85%, var(--orange) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 50% at 10% 85%, var(--cyan) 0%, transparent 50%),
+    var(--cream);
+}
+
+.gsap-bg-plasma::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.07'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+.gsap-bg-image-container {
+  position: relative;
+  width: 100%;
+  height: 100vh !important;
+  min-height: 100vh;
+  perspective: 500px;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.gsap-bg-image-container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(ellipse 70% 70% at 20% 30%, var(--pink) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 60% at 80% 15%, var(--yellow) 0%, transparent 55%),
+    radial-gradient(ellipse 65% 65% at 55% 85%, var(--orange) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 50% at 10% 85%, var(--cyan) 0%, transparent 50%);
+  mix-blend-mode: var(--gradient-overlay-blend);
+  opacity: var(--gradient-overlay-opacity);
+}
+
+.gsap-bg-no-gradient .gsap-bg-image-container::before {
+  display: none;
+}
+
+.gsap-bg-no-gradient .gsap-bg-plasma {
+  display: none;
+}
+
+.gsap-bg-image-container img {
+  position: relative;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  will-change: transform;
+}
+
+.gsap-bg-clouds,
+.gsap-bg-valley-mist,
+.gsap-bg-snow,
+.gsap-bg-rain,
+.gsap-bg-light-rays,
+.gsap-bg-particles,
+.gsap-bg-neon-glitch,
+.gsap-bg-heat-haze,
+.gsap-bg-fireflies,
+.gsap-bg-ocean-shimmer {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: var(--effect-opacity);
+  transform-origin: center center;
+  will-change: transform, opacity;
+}
+
+.gsap-bg-clouds {
+  inset: 2% auto auto -8%;
+  width: 116%;
+  height: 34%;
+  filter: blur(8px);
+  mix-blend-mode: screen;
+}
+
+.gsap-bg-cloud {
+  position: absolute;
+  display: block;
+  border-radius: 999px;
+  background:
+    radial-gradient(ellipse at 18% 55%, rgba(255, 255, 255, 0.7) 0 20%, transparent 42%),
+    radial-gradient(ellipse at 38% 42%, rgba(255, 255, 255, 0.85) 0 24%, transparent 50%),
+    radial-gradient(ellipse at 62% 58%, rgba(255, 255, 255, 0.68) 0 22%, transparent 46%),
+    radial-gradient(ellipse at 82% 50%, rgba(255, 255, 255, 0.56) 0 18%, transparent 42%);
+  transform-origin: center center;
+  will-change: transform;
+}
+
+.gsap-bg-cloud-a {
+  top: 0;
+  left: 2%;
+  width: 42vw;
+  height: 12vw;
+  min-width: 320px;
+  min-height: 90px;
+}
+
+.gsap-bg-cloud-b {
+  top: 20%;
+  right: 0;
+  width: 36vw;
+  height: 10vw;
+  min-width: 280px;
+  min-height: 82px;
+  opacity: 0.75;
+}
+
+.gsap-bg-cloud-c {
+  top: 42%;
+  left: 34%;
+  width: 30vw;
+  height: 8vw;
+  min-width: 240px;
+  min-height: 70px;
+  opacity: 0.55;
+}
+
+.gsap-bg-valley-mist {
+  inset: 48% auto auto -10%;
+  width: 120%;
+  height: 24%;
+  filter: blur(16px);
+  mix-blend-mode: screen;
+  background:
+    radial-gradient(ellipse at 25% 54%, rgba(235, 248, 255, 0.68) 0 18%, transparent 56%),
+    radial-gradient(ellipse at 52% 46%, rgba(255, 255, 255, 0.72) 0 16%, transparent 52%),
+    radial-gradient(ellipse at 78% 58%, rgba(218, 242, 255, 0.56) 0 18%, transparent 54%),
+    linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.42) 28%, rgba(230, 247, 255, 0.48) 55%, transparent 100%);
+  transform-origin: center center;
+  will-change: transform, opacity;
+}
+
+.gsap-bg-snowflake,
+.gsap-bg-raindrop,
+.gsap-bg-particle,
+.gsap-bg-firefly {
+  position: absolute;
+  display: block;
+  will-change: transform, opacity;
+}
+
+.gsap-bg-snowflake {
+  top: -8%;
+  width: var(--snow-size);
+  height: var(--snow-size);
+  border-radius: 50%;
+  background: var(--effect-color);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--effect-color) 65%, transparent);
+}
+
+.gsap-bg-raindrop {
+  top: -12%;
+  width: 1px;
+  height: 46px;
+  background: linear-gradient(180deg, transparent, var(--effect-color));
+  transform: rotate(var(--rain-angle));
+}
+
+.gsap-bg-light-rays {
+  inset: -20% -10% auto auto;
+  width: 80%;
+  height: 80%;
+  mix-blend-mode: screen;
+  filter: blur(8px);
+}
+
+.gsap-bg-light-rays span {
+  position: absolute;
+  top: -10%;
+  right: 8%;
+  width: 26%;
+  height: 130%;
+  background: linear-gradient(180deg, rgba(255, 246, 190, 0.55), transparent 72%);
+  clip-path: polygon(42% 0, 60% 0, 100% 100%, 0 100%);
+  transform-origin: top center;
+  will-change: transform, opacity;
+}
+
+.gsap-bg-light-rays span:nth-child(2) {
+  right: 28%;
+  width: 22%;
+  opacity: 0.65;
+}
+
+.gsap-bg-light-rays span:nth-child(3) {
+  right: 48%;
+  width: 18%;
+  opacity: 0.45;
+}
+
+.gsap-bg-particle {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--effect-color);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--effect-color) 80%, transparent);
+}
+
+.gsap-bg-neon-glitch {
+  mix-blend-mode: screen;
+  background:
+    linear-gradient(90deg, transparent 0 8%, rgba(0, 255, 238, 0.28) 9% 12%, transparent 13% 62%, rgba(255, 26, 140, 0.24) 63% 66%, transparent 67%),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.08) 0 1px, transparent 1px 7px);
+}
+
+.gsap-bg-heat-haze {
+  top: 34%;
+  height: 46%;
+  filter: blur(10px);
+  mix-blend-mode: screen;
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.16) 0 4px, transparent 4px 22px),
+    linear-gradient(180deg, transparent, rgba(255, 244, 214, 0.28), transparent);
+}
+
+.gsap-bg-firefly {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--effect-color);
+  box-shadow: 0 0 16px color-mix(in srgb, var(--effect-color) 90%, transparent), 0 0 30px rgba(137, 255, 110, 0.45);
+}
+
+.gsap-bg-ocean-shimmer {
+  top: 42%;
+  height: 48%;
+  mix-blend-mode: screen;
+  filter: blur(2px);
+  background:
+    repeating-linear-gradient(172deg, transparent 0 18px, rgba(160, 235, 255, 0.28) 20px 23px, transparent 26px 46px),
+    linear-gradient(180deg, transparent, rgba(48, 190, 255, 0.2), transparent);
+}
+
+.gsap-bg-hero-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+}
+
+.gsap-bg-hero-title {
+  font-family: "Anton", sans-serif;
+  font-size: clamp(4.5rem, 14vw, 14rem);
+  line-height: 0.95;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: var(--yellow);
+  text-align: center;
+  will-change: transform, opacity;
+}
+
+.gsap-bg-hero-title .gsap-bg-row {
+  display: block;
+  overflow: hidden;
+  min-height: 0.95em;
+}
+
+.gsap-bg-hero-title .gsap-bg-row span {
+  position: relative;
+  z-index: 0;
+  display: inline-block;
+  will-change: transform;
+}
+
+.gsap-bg-hero-title .gsap-bg-row span::before,
+.gsap-bg-hero-title .gsap-bg-row span::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  color: transparent;
+  -webkit-text-stroke: 2px currentColor;
+  text-stroke: 2px currentColor;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.gsap-bg-hero-title .gsap-bg-row span::before {
+  opacity: 0.7;
+  transform: translate3d(calc(var(--title-layer-x) * 1px), calc(var(--title-layer-y) * 1px), 0);
+}
+
+.gsap-bg-hero-title .gsap-bg-row span::after {
+  opacity: 0.4;
+  transform: translate3d(calc(var(--title-layer-x) * -1.45px), calc(var(--title-layer-y) * -1.45px), 0);
+}
+
+.gsap-bg-scanlines {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0, 0, 0, 0.06) 3px, rgba(0, 0, 0, 0.06) 4px);
+  opacity: 0.6;
+}
+
+.gsap-bg-brackets {
+  position: absolute;
+  inset: 1.5rem;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.gsap-bg-bracket {
+  position: absolute;
+  width: clamp(32px, 4vw, 56px);
+  height: clamp(32px, 4vw, 56px);
+  border-color: var(--dark);
+  border-style: solid;
+  border-width: 0;
+}
+
+.gsap-bg-bracket-tl {
+  top: 0;
+  left: 0;
+  border-top-width: 3px;
+  border-left-width: 3px;
+}
+
+.gsap-bg-bracket-tr {
+  top: 0;
+  right: 0;
+  border-top-width: 3px;
+  border-right-width: 3px;
+}
+
+.gsap-bg-bracket-bl {
+  bottom: 0;
+  left: 0;
+  border-bottom-width: 3px;
+  border-left-width: 3px;
+}
+
+.gsap-bg-bracket-br {
+  bottom: 0;
+  right: 0;
+  border-bottom-width: 3px;
+  border-right-width: 3px;
+}
+
+.gsap-bg-deco-star {
+  position: absolute;
+  z-index: 6;
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  pointer-events: none;
+  will-change: transform;
+  line-height: 1;
+}
+
+@media (max-height: 600px) {
+  .gsap-bg-brackets {
+    inset: 0.75rem;
+  }
+
+  .gsap-bg-bracket {
+    width: 24px;
+    height: 24px;
+  }
+
+  .gsap-bg-deco-star[data-star-index="0"] {
+    top: 18% !important;
+    left: 24% !important;
+  }
+
+  .gsap-bg-deco-star[data-star-index="1"] {
+    top: 55% !important;
+    left: 6% !important;
+  }
+
+  .gsap-bg-deco-star[data-star-index="2"] {
+    top: 22% !important;
+    right: 20% !important;
+  }
+
+  .gsap-bg-deco-star[data-star-index="3"] {
+    bottom: 18% !important;
+    left: 18% !important;
+  }
+
+  .gsap-bg-deco-star {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-height: 420px) {
+  .gsap-bg-deco-star {
+    display: none;
+  }
+
+}
