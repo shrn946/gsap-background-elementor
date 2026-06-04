@@ -1,9 +1,9 @@
 <?php
 /**
  * Plugin Name: GSAP Background Elementor Widget
- * Description: Custom Elementor widget converted from the GSAP background HTML demo.
+ * Description: Custom Elementor widget.
  * Version: 1.0.0
- * Author: Custom
+ * Author: wp-desgn-lab
  * Text Domain: gsap-background
  *
  * @package GsapBackground
